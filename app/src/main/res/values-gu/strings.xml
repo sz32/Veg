@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Ai Agent</string>
+
+    <!-- Product List Screen -->
+    <string name="products">ઉત્પાદનો</string>
+    <string name="toggle_layout">લેઆઉટ બદલો</string>
+    <string name="cart">કાર્ટ</string>
+    <string name="rating">રેટિંગ</string>
+    <string name="add_to_cart">કાર્ટમાં ઉમેરો</string>
+    <string name="added">ઉમેર્યું</string>
+    <string name="add">ઉમેરો</string>
+
+    <!-- Checkout Screen -->
+    <string name="checkout">ચેકઆઉટ</string>
+    <string name="back">પાછળ</string>
+    <string name="your_cart_is_empty">તમારી કાર્ટ ખાલી છે</string>
+    <string name="continue_shopping">ખરીદી ચાલુ રાખો</string>
+    <string name="remove_from_cart">કાર્ટમાંથી દૂર કરો</string>
+    <string name="items">વસ્તુઓ (%d)</string>
+    <string name="total">કુલ</string>
+    <string name="pay_now">હમણાં ચૂકવણી કરો</string>
+
+    <!-- Product Detail Screen -->
+    <string name="product_details">ઉત્પાદન વિગતો</string>
+    <string name="product_not_found">ઉત્પાદન મળ્યું નથી</string>
+    <string name="go_back">પાછા જાઓ</string>
+    <string name="price_label">કિંમત</string>
+    <string name="description">વર્ણન</string>
+    <string name="key_features">મુખ્ય લક્ષણો</string>
+    <string name="total_price">કુલ કિંમત</string>
+    <string name="added_to_cart">કાર્ટમાં ઉમેર્યું</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">સેટિંગ્સ</string>
+    <string name="language">ભાષા</string>
+    <string name="theme">થીમ</string>
+    <string name="select_language">ભાષા પસંદ કરો</string>
+    <string name="select_theme">થીમ પસંદ કરો</string>
+    <string name="english">અંગ્રેજી</string>
+    <string name="gujarati">ગુજરાતી</string>
+    <string name="hindi">હિન્દી</string>
+    <string name="odia">ઓડિયા</string>
+    <string name="marathi">મરાઠી</string>
+    <string name="light">પ્રકાશ</string>
+    <string name="dark">શ્યામ</string>
+    <string name="system_default">સિસ્ટમ ડિફોલ્ટ</string>
+    <string name="appearance">દેખાવ</string>
+    <string name="preferences">પસંદગીઓ</string>
+</resources>

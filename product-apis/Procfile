@@ -1,0 +1,2 @@
+web: java -jar product-apis/build/libs/product-apis-1.0.0.jar
+

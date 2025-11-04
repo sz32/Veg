@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  product-apis:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: product-apis
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - ENVIRONMENT=development
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+

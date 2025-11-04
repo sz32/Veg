@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Ai Agent</string>
+
+    <!-- Product List Screen -->
+    <string name="products">उत्पादने</string>
+    <string name="toggle_layout">लेआउट बदला</string>
+    <string name="cart">कार्ट</string>
+    <string name="rating">रेटिंग</string>
+    <string name="add_to_cart">कार्टमध्ये जोडा</string>
+    <string name="added">जोडले</string>
+    <string name="add">जोडा</string>
+
+    <!-- Checkout Screen -->
+    <string name="checkout">चेकआउट</string>
+    <string name="back">मागे</string>
+    <string name="your_cart_is_empty">तुमची कार्ट रिकामी आहे</string>
+    <string name="continue_shopping">खरेदी सुरू ठेवा</string>
+    <string name="remove_from_cart">कार्टमधून काढा</string>
+    <string name="items">वस्तू (%d)</string>
+    <string name="total">एकूण</string>
+    <string name="pay_now">आता पेमेंट करा</string>
+
+    <!-- Product Detail Screen -->
+    <string name="product_details">उत्पादन तपशील</string>
+    <string name="product_not_found">उत्पादन सापडले नाही</string>
+    <string name="go_back">परत जा</string>
+    <string name="price_label">किंमत</string>
+    <string name="description">वर्णन</string>
+    <string name="key_features">मुख्य वैशिष्ट्ये</string>
+    <string name="total_price">एकूण किंमत</string>
+    <string name="added_to_cart">कार्टमध्ये जोडले</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">सेटिंग्ज</string>
+    <string name="language">भाषा</string>
+    <string name="theme">थीम</string>
+    <string name="select_language">भाषा निवडा</string>
+    <string name="select_theme">थीम निवडा</string>
+    <string name="english">इंग्रजी</string>
+    <string name="gujarati">गुजराती</string>
+    <string name="hindi">हिंदी</string>
+    <string name="odia">ओडिया</string>
+    <string name="marathi">मराठी</string>
+    <string name="light">लाईट</string>
+    <string name="dark">डार्क</string>
+    <string name="system_default">सिस्टम डीफॉल्ट</string>
+    <string name="appearance">देखावा</string>
+    <string name="preferences">प्राधान्ये</string>
+</resources>
+

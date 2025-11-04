@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Ai Agent</string>
+
+    <!-- Product List Screen -->
+    <string name="products">ଉତ୍ପାଦଗୁଡିକ</string>
+    <string name="toggle_layout">ଲେଆଉଟ୍ ବଦଳନ୍ତୁ</string>
+    <string name="cart">କାର୍ଟ</string>
+    <string name="rating">ରେଟିଂ</string>
+    <string name="add_to_cart">କାର୍ଟରେ ଯୋଗ କରନ୍ତୁ</string>
+    <string name="added">ଯୋଗ କରାଯାଇଛି</string>
+    <string name="add">ଯୋଗ କରନ୍ତୁ</string>
+
+    <!-- Checkout Screen -->
+    <string name="checkout">ଚେକଆଉଟ୍</string>
+    <string name="back">ପଛକୁ</string>
+    <string name="your_cart_is_empty">ଆପଣଙ୍କ କାର୍ଟ ଖାଲି ଅଛି</string>
+    <string name="continue_shopping">ସପିଂ ଜାରି ରଖନ୍ତୁ</string>
+    <string name="remove_from_cart">କାର୍ଟରୁ ବାହାର କରନ୍ତୁ</string>
+    <string name="items">ବସ୍ତୁଗୁଡିକ (%d)</string>
+    <string name="total">ମୋଟ</string>
+    <string name="pay_now">ବର୍ତ୍ତମାନ ଦେୟ ଦିଅନ୍ତୁ</string>
+
+    <!-- Product Detail Screen -->
+    <string name="product_details">ଉତ୍ପାଦ ବିବରଣୀ</string>
+    <string name="product_not_found">ଉତ୍ପାଦ ମିଳିଲା ନାହିଁ</string>
+    <string name="go_back">ପଛକୁ ଯାଆନ୍ତୁ</string>
+    <string name="price_label">ମୂଲ୍ୟ</string>
+    <string name="description">ବର୍ଣ୍ଣନା</string>
+    <string name="key_features">ମୁଖ୍ୟ ବୈଶିଷ୍ଟ୍ୟଗୁଡିକ</string>
+    <string name="total_price">ମୋଟ ମୂଲ୍ୟ</string>
+    <string name="added_to_cart">କାର୍ଟରେ ଯୋଗ କରାଯାଇଛି</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">ସେଟିଂସ୍</string>
+    <string name="language">ଭାଷା</string>
+    <string name="theme">ଥିମ୍</string>
+    <string name="select_language">ଭାଷା ଚୟନ କରନ୍ତୁ</string>
+    <string name="select_theme">ଥିମ୍ ଚୟନ କରନ୍ତୁ</string>
+    <string name="english">ଇଂରାଜୀ</string>
+    <string name="gujarati">ଗୁଜରାଟୀ</string>
+    <string name="hindi">ହିନ୍ଦୀ</string>
+    <string name="odia">ଓଡିଆ</string>
+    <string name="marathi">ମରାଠୀ</string>
+    <string name="light">ଆଲୋକ</string>
+    <string name="dark">ଅନ୍ଧକାର</string>
+    <string name="system_default">ସିଷ୍ଟମ୍ ଡିଫଲ୍ଟ</string>
+    <string name="appearance">ଦୃଶ୍ୟ</string>
+    <string name="preferences">ପସନ୍ଦଗୁଡିକ</string>
+</resources>

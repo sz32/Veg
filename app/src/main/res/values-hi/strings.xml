@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Ai Agent</string>
+
+    <!-- Product List Screen -->
+    <string name="products">उत्पाद</string>
+    <string name="toggle_layout">लेआउट बदलें</string>
+    <string name="cart">कार्ट</string>
+    <string name="rating">रेटिंग</string>
+    <string name="add_to_cart">कार्ट में जोड़ें</string>
+    <string name="added">जोड़ा गया</string>
+    <string name="add">जोड़ें</string>
+
+    <!-- Checkout Screen -->
+    <string name="checkout">चेकआउट</string>
+    <string name="back">वापस</string>
+    <string name="your_cart_is_empty">आपकी कार्ट खाली है</string>
+    <string name="continue_shopping">खरीदारी जारी रखें</string>
+    <string name="remove_from_cart">कार्ट से हटाएं</string>
+    <string name="items">वस्तुएं (%d)</string>
+    <string name="total">कुल</string>
+    <string name="pay_now">अभी भुगतान करें</string>
+
+    <!-- Product Detail Screen -->
+    <string name="product_details">उत्पाद विवरण</string>
+    <string name="product_not_found">उत्पाद नहीं मिला</string>
+    <string name="go_back">वापस जाएं</string>
+    <string name="price_label">कीमत</string>
+    <string name="description">विवरण</string>
+    <string name="key_features">मुख्य विशेषताएं</string>
+    <string name="total_price">कुल कीमत</string>
+    <string name="added_to_cart">कार्ट में जोड़ा गया</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">सेटिंग्स</string>
+    <string name="language">भाषा</string>
+    <string name="theme">थीम</string>
+    <string name="select_language">भाषा चुनें</string>
+    <string name="select_theme">थीम चुनें</string>
+    <string name="english">अंग्रेज़ी</string>
+    <string name="gujarati">गुजराती</string>
+    <string name="hindi">हिन्दी</string>
+    <string name="odia">ओड़िया</string>
+    <string name="marathi">मराठी</string>
+    <string name="light">लाइट</string>
+    <string name="dark">डार्क</string>
+    <string name="system_default">सिस्टम डिफ़ॉल्ट</string>
+    <string name="appearance">दिखावट</string>
+    <string name="preferences">वरीयताएँ</string>
+</resources>
