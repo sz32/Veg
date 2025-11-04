@@ -14,5 +14,45 @@
 .cxx
 local.properties
 
-# Project exclude paths
+# Gradle
+.gradle/
+build/
+.kotlin/
+*/build/
+**/build/
+
+# IDE
+.idea/
+*.iws
+*.ipr
+out/
+
+# Mac
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Module build directories
+/app/build/
 /settings/build/
+/product-apis/build/
+/product-apis/logs/
+
+# Generated files
+/app/build/
+/app/src/main/java/generated/
+/app/src/main/res/generated/
+
+# KSP
+**/build/generated/ksp/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.bak
+
+# Local configuration
+local.properties

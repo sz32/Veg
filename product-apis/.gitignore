@@ -4,6 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+.kotlin/
 
 # Kotlin
 *.kotlin_module
@@ -27,3 +28,26 @@ Thumbs.db
 # Application
 application-local.conf
 
+# Docker
+.dockerignore
+
+# Deployment
+.env
+.env.local
+.env.*.local
+
+# Heroku
+.heroku/
+
+# Railway
+.railway/
+
+# Test
+test-results/
+**/test-results/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.bak
