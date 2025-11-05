@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product API Tester & Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .settings-bar {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .settings-bar label {
+            font-weight: 600;
+            margin-right: 10px;
+            color: #495057;
+        }
+
+        .settings-bar input {
+            padding: 8px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 300px;
+        }
+
+        .settings-bar input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            min-height: calc(100vh - 200px);
+        }
+
+        .sidebar {
+            background: #f8f9fa;
+            border-right: 2px solid #e9ecef;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #495057;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .endpoint-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .endpoint-item:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .endpoint-item.active {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .endpoint-method {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .method-GET { background: #28a745; color: white; }
+        .method-POST { background: #007bff; color: white; }
+        .method-PUT { background: #ffc107; color: #333; }
+        .method-DELETE { background: #dc3545; color: white; }
+
+        .endpoint-path {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .main-content {
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .endpoint-detail {
+            display: none;
+        }
+
+        .endpoint-detail.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .endpoint-header {
+            margin-bottom: 30px;
+        }
+
+        .endpoint-title {
+            font-size: 2em;
+            color: #212529;
+            margin-bottom: 10px;
+        }
+
+        .endpoint-description {
+            color: #6c757d;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .section h3 {
+            font-size: 1.3em;
+            color: #495057;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h3::before {
+            content: "▶";
+            color: #667eea;
+            margin-right: 10px;
+            font-size: 0.8em;
+        }
+
+        .param-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .param-table th,
+        .param-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .param-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .param-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .param-table code {
+            background: #f8f9fa;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-required {
+            background: #ffeaa7;
+            color: #d63031;
+        }
+
+        .badge-optional {
+            background: #dfe6e9;
+            color: #636e72;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            font-family: 'Courier New', monospace;
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            margin-left: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .response-section {
+            margin-top: 30px;
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .response-body {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .response-body pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .code-block {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            color: #0c5460;
+        }
+
+        .copy-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #5a6268;
+        }
+
+        .url-display {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 2px solid #e9ecef;
+            font-family: 'Courier New', monospace;
+            color: #495057;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Product API Tester</h1>
+            <p>Complete API Documentation & Testing Interface</p>
+        </div>
+
+        <div class="settings-bar">
+            <label for="baseUrl">API Base URL:</label>
+            <input type="text" id="baseUrl" value="http://localhost:8080" placeholder="http://localhost:8080">
+        </div>
+
+        <div class="content">
+            <div class="sidebar">
+                <h2>📋 Endpoints</h2>
+
+                <div class="endpoint-item" data-endpoint="info">
+                    <div>
+                        <span class="endpoint-method method-GET">GET</span>
+                        <strong>API Info</strong>
+                    </div>
+                    <div class="endpoint-path">/</div>
+                </div>
+
+                <div class="endpoint-item" data-endpoint="health">
+                    <div>
+                        <span class="endpoint-method method-GET">GET</span>
+                        <strong>Health Check</strong>
+                    </div>
+                    <div class="endpoint-path">/health</div>
+                </div>
+
+                <div class="endpoint-item" data-endpoint="get-products">
+                    <div>
+                        <span class="endpoint-method method-GET">GET</span>
+                        <strong>Get All Products</strong>
+                    </div>
+                    <div class="endpoint-path">/api/v1/products</div>
+                </div>
+
+                <div class="endpoint-item" data-endpoint="get-product">
+                    <div>
+                        <span class="endpoint-method method-GET">GET</span>
+                        <strong>Get Product by ID</strong>
+                    </div>
+                    <div class="endpoint-path">/api/v1/products/{id}</div>
+                </div>
+
+                <div class="endpoint-item" data-endpoint="create-product">
+                    <div>
+                        <span class="endpoint-method method-POST">POST</span>
+                        <strong>Create Product</strong>
+                    </div>
+                    <div class="endpoint-path">/api/v1/products</div>
+                </div>
+
+                <div class="endpoint-item" data-endpoint="update-product">
+                    <div>
+                        <span class="endpoint-method method-PUT">PUT</span>
+                        <strong>Update Product</strong>
+                    </div>
+                    <div class="endpoint-path">/api/v1/products/{id}</div>
+                </div>
+
+                <div class="endpoint-item" data-endpoint="delete-product">
+                    <div>
+                        <span class="endpoint-method method-DELETE">DELETE</span>
+                        <strong>Delete Product</strong>
+                    </div>
+                    <div class="endpoint-path">/api/v1/products/{id}</div>
+                </div>
+
+                <div class="endpoint-item" data-endpoint="get-categories">
+                    <div>
+                        <span class="endpoint-method method-GET">GET</span>
+                        <strong>Get Categories</strong>
+                    </div>
+                    <div class="endpoint-path">/api/v1/products/categories/list</div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <!-- API Info Endpoint -->
+                <div class="endpoint-detail" id="info">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-GET">GET</span> API Information
+                        </h2>
+                        <p class="endpoint-description">
+                            Get basic information about the API including name, version, and status.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Request</h3>
+                        <div class="url-display" id="info-url">/</div>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "name": "Product APIs",
+  "version": "1.0.0",
+  "status": "running",
+  "timestamp": 1699200000000
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <button class="btn btn-primary" onclick="testInfo()">Send Request</button>
+                    </div>
+
+                    <div class="response-section" id="info-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="info-status"></span>
+                        </div>
+                        <div class="response-body" id="info-body"></div>
+                    </div>
+                    <div class="loading" id="info-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+
+                <!-- Health Check Endpoint -->
+                <div class="endpoint-detail" id="health">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-GET">GET</span> Health Check
+                        </h2>
+                        <p class="endpoint-description">
+                            Check the health status of the API server.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Request</h3>
+                        <div class="url-display" id="health-url">/health</div>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "status": "UP",
+  "timestamp": 1699200000000
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <button class="btn btn-primary" onclick="testHealth()">Send Request</button>
+                    </div>
+
+                    <div class="response-section" id="health-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="health-status"></span>
+                        </div>
+                        <div class="response-body" id="health-body"></div>
+                    </div>
+                    <div class="loading" id="health-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+
+                <!-- Get All Products Endpoint -->
+                <div class="endpoint-detail" id="get-products">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-GET">GET</span> Get All Products
+                        </h2>
+                        <p class="endpoint-description">
+                            Retrieve a list of all products with optional pagination, search, and category filtering.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Query Parameters</h3>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>page</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Page number for pagination (default: 1)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>pageSize</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Number of items per page (default: 10)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>category</code></td>
+                                    <td>String</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Filter by category name</td>
+                                </tr>
+                                <tr>
+                                    <td><code>search</code></td>
+                                    <td>String</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Search products by name or description</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h3>Test Request</h3>
+                        <form id="get-products-form">
+                            <div class="form-group">
+                                <label>Page Number</label>
+                                <input type="number" name="page" value="1" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Page Size</label>
+                                <input type="number" name="pageSize" value="10" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Category (Optional)</label>
+                                <input type="text" name="category" placeholder="e.g., Electronics">
+                            </div>
+                            <div class="form-group">
+                                <label>Search (Optional)</label>
+                                <input type="text" name="search" placeholder="Search products...">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Request</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </form>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example (Paginated)</h3>
+                        <div class="code-block">
+                            <pre>{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "name": "Smartphone X",
+      "imageUrl": "https://example.com/phone.jpg",
+      "rating": 4.5,
+      "price": 699.99,
+      "description": "Latest smartphone",
+      "category": "Electronics",
+      "stock": 50
+    }
+  ],
+  "page": 1,
+  "pageSize": 10,
+  "totalItems": 100,
+  "totalPages": 10,
+  "timestamp": 1699200000000
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="response-section" id="get-products-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="get-products-status"></span>
+                        </div>
+                        <div class="response-body" id="get-products-body"></div>
+                    </div>
+                    <div class="loading" id="get-products-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+
+                <!-- Get Product by ID Endpoint -->
+                <div class="endpoint-detail" id="get-product">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-GET">GET</span> Get Product by ID
+                        </h2>
+                        <p class="endpoint-description">
+                            Retrieve detailed information about a specific product by its ID.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Path Parameters</h3>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>id</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>The unique identifier of the product</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h3>Test Request</h3>
+                        <form id="get-product-form">
+                            <div class="form-group">
+                                <label>Product ID</label>
+                                <input type="number" name="id" value="1" required min="1">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Request</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </form>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "success": true,
+  "data": {
+    "id": 1,
+    "name": "Smartphone X",
+    "imageUrl": "https://example.com/phone.jpg",
+    "rating": 4.5,
+    "price": 699.99,
+    "description": "Latest smartphone with cutting-edge features",
+    "category": "Electronics",
+    "stock": 50
+  },
+  "timestamp": 1699200000000
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="response-section" id="get-product-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="get-product-status"></span>
+                        </div>
+                        <div class="response-body" id="get-product-body"></div>
+                    </div>
+                    <div class="loading" id="get-product-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+
+                <!-- Create Product Endpoint -->
+                <div class="endpoint-detail" id="create-product">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-POST">POST</span> Create Product
+                        </h2>
+                        <p class="endpoint-description">
+                            Create a new product in the system.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Request Body</h3>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>name</code></td>
+                                    <td>String</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>Product name (cannot be empty)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>imageUrl</code></td>
+                                    <td>String</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>URL to product image</td>
+                                </tr>
+                                <tr>
+                                    <td><code>rating</code></td>
+                                    <td>Float</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>Product rating (0-5)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>price</code></td>
+                                    <td>Double</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>Product price (must be > 0)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>description</code></td>
+                                    <td>String</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Product description (default: "")</td>
+                                </tr>
+                                <tr>
+                                    <td><code>category</code></td>
+                                    <td>String</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Product category (default: "General")</td>
+                                </tr>
+                                <tr>
+                                    <td><code>stock</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Available stock (default: 100)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h3>Test Request</h3>
+                        <form id="create-product-form">
+                            <div class="form-group">
+                                <label>Request Body (JSON)</label>
+                                <textarea name="body" rows="10">{
+  "name": "New Product",
+  "imageUrl": "https://example.com/product.jpg",
+  "rating": 4.5,
+  "price": 299.99,
+  "description": "Amazing new product",
+  "category": "Electronics",
+  "stock": 100
+}</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Request</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </form>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "success": true,
+  "data": {
+    "id": 101,
+    "name": "New Product",
+    "imageUrl": "https://example.com/product.jpg",
+    "rating": 4.5,
+    "price": 299.99,
+    "description": "Amazing new product",
+    "category": "Electronics",
+    "stock": 100
+  },
+  "message": "Product created successfully",
+  "timestamp": 1699200000000
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="response-section" id="create-product-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="create-product-status"></span>
+                        </div>
+                        <div class="response-body" id="create-product-body"></div>
+                    </div>
+                    <div class="loading" id="create-product-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+
+                <!-- Update Product Endpoint -->
+                <div class="endpoint-detail" id="update-product">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-PUT">PUT</span> Update Product
+                        </h2>
+                        <p class="endpoint-description">
+                            Update an existing product. All fields are optional - only send the fields you want to update.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Path Parameters</h3>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>id</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>The unique identifier of the product to update</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h3>Request Body (All Optional)</h3>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>name</code></td>
+                                    <td>String</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Product name</td>
+                                </tr>
+                                <tr>
+                                    <td><code>imageUrl</code></td>
+                                    <td>String</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>URL to product image</td>
+                                </tr>
+                                <tr>
+                                    <td><code>rating</code></td>
+                                    <td>Float</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Product rating (0-5)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>price</code></td>
+                                    <td>Double</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Product price (must be > 0)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>description</code></td>
+                                    <td>String</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Product description</td>
+                                </tr>
+                                <tr>
+                                    <td><code>category</code></td>
+                                    <td>String</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Product category</td>
+                                </tr>
+                                <tr>
+                                    <td><code>stock</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-optional">Optional</span></td>
+                                    <td>Available stock</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h3>Test Request</h3>
+                        <form id="update-product-form">
+                            <div class="form-group">
+                                <label>Product ID</label>
+                                <input type="number" name="id" value="1" required min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Request Body (JSON) - Only include fields to update</label>
+                                <textarea name="body" rows="10">{
+  "price": 599.99,
+  "stock": 75,
+  "description": "Updated description"
+}</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Request</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </form>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "success": true,
+  "data": {
+    "id": 1,
+    "name": "Smartphone X",
+    "imageUrl": "https://example.com/phone.jpg",
+    "rating": 4.5,
+    "price": 599.99,
+    "description": "Updated description",
+    "category": "Electronics",
+    "stock": 75
+  },
+  "message": "Product updated successfully",
+  "timestamp": 1699200000000
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="response-section" id="update-product-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="update-product-status"></span>
+                        </div>
+                        <div class="response-body" id="update-product-body"></div>
+                    </div>
+                    <div class="loading" id="update-product-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+
+                <!-- Delete Product Endpoint -->
+                <div class="endpoint-detail" id="delete-product">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-DELETE">DELETE</span> Delete Product
+                        </h2>
+                        <p class="endpoint-description">
+                            Delete a product from the system by its ID.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Path Parameters</h3>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>id</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>The unique identifier of the product to delete</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h3>Test Request</h3>
+                        <div class="info-box">
+                            ⚠️ Warning: This action will permanently delete the product.
+                        </div>
+                        <form id="delete-product-form">
+                            <div class="form-group">
+                                <label>Product ID</label>
+                                <input type="number" name="id" value="1" required min="1">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Request</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </form>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "success": true,
+  "data": null,
+  "message": "Product deleted successfully",
+  "timestamp": 1699200000000
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="response-section" id="delete-product-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="delete-product-status"></span>
+                        </div>
+                        <div class="response-body" id="delete-product-body"></div>
+                    </div>
+                    <div class="loading" id="delete-product-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+
+                <!-- Get Categories Endpoint -->
+                <div class="endpoint-detail" id="get-categories">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-GET">GET</span> Get Categories
+                        </h2>
+                        <p class="endpoint-description">
+                            Retrieve a list of all product categories available in the system.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Request</h3>
+                        <div class="url-display" id="get-categories-url">/api/v1/products/categories/list</div>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "success": true,
+  "data": [
+    "Electronics",
+    "Clothing",
+    "Home & Garden",
+    "Sports"
+  ],
+  "timestamp": 1699200000000
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <button class="btn btn-primary" onclick="testCategories()">Send Request</button>
+                    </div>
+
+                    <div class="response-section" id="get-categories-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="get-categories-status"></span>
+                        </div>
+                        <div class="response-body" id="get-categories-body"></div>
+                    </div>
+                    <div class="loading" id="get-categories-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Utility function to get base URL
+        function getBaseUrl() {
+            return document.getElementById('baseUrl').value.replace(/\/$/, '');
+        }
+
+        // Utility function to show response
+        function showResponse(endpoint, status, body) {
+            const responseSection = document.getElementById(`${endpoint}-response`);
+            const statusBadge = document.getElementById(`${endpoint}-status`);
+            const bodyElement = document.getElementById(`${endpoint}-body`);
+            const loading = document.getElementById(`${endpoint}-loading`);
+
+            loading.classList.remove('active');
+            responseSection.style.display = 'block';
+
+            statusBadge.textContent = `${status}`;
+            statusBadge.className = 'status-badge ' + (status < 400 ? 'status-success' : 'status-error');
+
+            bodyElement.innerHTML = '<pre>' + JSON.stringify(body, null, 2) + '</pre>';
+        }
+
+        // Utility function to show loading
+        function showLoading(endpoint) {
+            const loading = document.getElementById(`${endpoint}-loading`);
+            const responseSection = document.getElementById(`${endpoint}-response`);
+            responseSection.style.display = 'none';
+            loading.classList.add('active');
+        }
+
+        // Sidebar navigation
+        document.querySelectorAll('.endpoint-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all items
+                document.querySelectorAll('.endpoint-item').forEach(i => i.classList.remove('active'));
+                document.querySelectorAll('.endpoint-detail').forEach(d => d.classList.remove('active'));
+
+                // Add active class to clicked item
+                this.classList.add('active');
+                const endpoint = this.getAttribute('data-endpoint');
+                document.getElementById(endpoint).classList.add('active');
+            });
+        });
+
+        // Set first endpoint as active by default
+        document.querySelector('.endpoint-item').click();
+
+        // Test Info
+        function testInfo() {
+            showLoading('info');
+            fetch(`${getBaseUrl()}/`)
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('info', status, data);
+                })
+                .catch(error => {
+                    showResponse('info', 0, { error: error.message });
+                });
+        }
+
+        // Test Health
+        function testHealth() {
+            showLoading('health');
+            fetch(`${getBaseUrl()}/health`)
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('health', status, data);
+                })
+                .catch(error => {
+                    showResponse('health', 0, { error: error.message });
+                });
+        }
+
+        // Test Categories
+        function testCategories() {
+            showLoading('get-categories');
+            fetch(`${getBaseUrl()}/api/v1/products/categories/list`)
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('get-categories', status, data);
+                })
+                .catch(error => {
+                    showResponse('get-categories', 0, { error: error.message });
+                });
+        }
+
+        // Get Products Form
+        document.getElementById('get-products-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showLoading('get-products');
+
+            const formData = new FormData(this);
+            const params = new URLSearchParams();
+
+            if (formData.get('page')) params.append('page', formData.get('page'));
+            if (formData.get('pageSize')) params.append('pageSize', formData.get('pageSize'));
+            if (formData.get('category')) params.append('category', formData.get('category'));
+            if (formData.get('search')) params.append('search', formData.get('search'));
+
+            const url = `${getBaseUrl()}/api/v1/products?${params.toString()}`;
+
+            fetch(url)
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('get-products', status, data);
+                })
+                .catch(error => {
+                    showResponse('get-products', 0, { error: error.message });
+                });
+        });
+
+        // Get Product Form
+        document.getElementById('get-product-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showLoading('get-product');
+
+            const formData = new FormData(this);
+            const id = formData.get('id');
+
+            fetch(`${getBaseUrl()}/api/v1/products/${id}`)
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('get-product', status, data);
+                })
+                .catch(error => {
+                    showResponse('get-product', 0, { error: error.message });
+                });
+        });
+
+        // Create Product Form
+        document.getElementById('create-product-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showLoading('create-product');
+
+            const formData = new FormData(this);
+            let body;
+
+            try {
+                body = JSON.parse(formData.get('body'));
+            } catch (error) {
+                showResponse('create-product', 0, { error: 'Invalid JSON in request body' });
+                return;
+            }
+
+            fetch(`${getBaseUrl()}/api/v1/products`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('create-product', status, data);
+                })
+                .catch(error => {
+                    showResponse('create-product', 0, { error: error.message });
+                });
+        });
+
+        // Update Product Form
+        document.getElementById('update-product-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showLoading('update-product');
+
+            const formData = new FormData(this);
+            const id = formData.get('id');
+            let body;
+
+            try {
+                body = JSON.parse(formData.get('body'));
+            } catch (error) {
+                showResponse('update-product', 0, { error: 'Invalid JSON in request body' });
+                return;
+            }
+
+            fetch(`${getBaseUrl()}/api/v1/products/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('update-product', status, data);
+                })
+                .catch(error => {
+                    showResponse('update-product', 0, { error: error.message });
+                });
+        });
+
+        // Delete Product Form
+        document.getElementById('delete-product-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!confirm('Are you sure you want to delete this product?')) {
+                return;
+            }
+
+            showLoading('delete-product');
+
+            const formData = new FormData(this);
+            const id = formData.get('id');
+
+            fetch(`${getBaseUrl()}/api/v1/products/${id}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('delete-product', status, data);
+                })
+                .catch(error => {
+                    showResponse('delete-product', 0, { error: error.message });
+                });
+        });
+    </script>
+</body>
+</html>
+

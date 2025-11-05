@@ -20,6 +20,48 @@ A RESTful API service built with Ktor for managing product data. This is a pure 
 - **Gradle 8.0** or higher
 - **Kotlin 1.9.20** or higher
 
+## 🧪 API Testing & Documentation
+
+### Interactive API Tester
+
+We've created a **beautiful, interactive HTML-based API tester** that provides:
+
+- 🎨 **Modern UI** - Clean, responsive design with gradient themes
+- 📋 **Complete Documentation** - Detailed parameter descriptions and examples for all endpoints
+- 🚀 **Live Testing** - Test all API endpoints directly in your browser
+- 📊 **Response Viewer** - Formatted JSON responses with status codes
+- 🔧 **Configurable** - Easy base URL configuration for local and production testing
+- ✨ **No Setup Required** - Standalone HTML file, works offline
+
+### How to Use the API Tester
+
+1. **Open the tester** in your browser:
+   ```
+   file:///path/to/product-apis/api-tester.html
+   ```
+   Or simply double-click the `api-tester.html` file in the `product-apis` directory.
+
+2. **Configure the base URL** (default is `http://localhost:8080`)
+
+3. **Select an endpoint** from the sidebar navigation
+
+4. **Fill in the parameters** and click "Send Request"
+
+5. **View the response** with status code and formatted JSON
+
+### Available Endpoints in Tester
+
+- ✅ GET `/` - API Information
+- ✅ GET `/health` - Health Check
+- ✅ GET `/api/v1/products` - Get All Products (with pagination, search, filters)
+- ✅ GET `/api/v1/products/{id}` - Get Product by ID
+- ✅ POST `/api/v1/products` - Create Product
+- ✅ PUT `/api/v1/products/{id}` - Update Product
+- ✅ DELETE `/api/v1/products/{id}` - Delete Product
+- ✅ GET `/api/v1/products/categories/list` - Get Categories
+
+**File Location:** `product-apis/api-tester.html`
+
 ## 🏗️ Project Structure
 
 ```
@@ -40,6 +82,7 @@ product-apis/
 │       └── resources/
 │           ├── application.conf            # Ktor configuration
 │           └── logback.xml                 # Logging configuration
+├── api-tester.html                         # Interactive API tester & documentation
 ├── build.gradle.kts                        # Build configuration
 └── README.md                               # This file
 ```
@@ -523,6 +566,17 @@ For persistent storage, integrate a database:
 
 ## 🧪 Testing
 
+### Recommended: Use the Interactive API Tester
+
+The **easiest and best way** to test the API is using our interactive HTML tester:
+
+```bash
+# Open the API tester in your browser
+open product-apis/api-tester.html
+```
+
+The API tester provides a beautiful interface with complete documentation, live testing, and formatted responses for all endpoints. See the [API Testing & Documentation](#-api-testing--documentation) section above for more details.
+
 ### Test with cURL
 
 ```bash
@@ -546,6 +600,8 @@ curl -X POST http://localhost:8080/api/v1/products \
 1. Import the API endpoints into Postman
 2. Set base URL: `http://localhost:8080`
 3. Test each endpoint with different request bodies
+
+**Tip:** You can also use the `api-tester.html` file as a reference for request/response examples when setting up Postman collections.
 
 ## 📦 Dependencies
 
