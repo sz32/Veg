@@ -3,7 +3,9 @@ package com.ai.agent.productapis
 import com.ai.agent.productapis.models.HealthResponse
 import com.ai.agent.productapis.models.InfoResponse
 import com.ai.agent.productapis.plugins.*
+import com.ai.agent.productapis.repository.CartRepository
 import com.ai.agent.productapis.repository.ProductRepository
+import com.ai.agent.productapis.routes.cartRoutes
 import com.ai.agent.productapis.routes.productRoutes
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -23,6 +25,7 @@ fun main() {
 fun Application.module() {
     // Initialize repository
     val productRepository = ProductRepository()
+    val cartRepository = CartRepository(productRepository)
 
     // Configure plugins
     configureHTTP()
@@ -55,6 +58,7 @@ fun Application.module() {
 
         // API routes
         productRoutes(productRepository)
+        cartRoutes(cartRepository)
     }
 
     // Log startup
@@ -68,5 +72,11 @@ fun Application.module() {
     environment.log.info("  PUT  /api/v1/products/{id}")
     environment.log.info("  DELETE /api/v1/products/{id}")
     environment.log.info("  GET  /api/v1/products/categories/list")
+    environment.log.info("  GET  /api/v1/cart")
+    environment.log.info("  POST /api/v1/cart/items")
+    environment.log.info("  GET  /api/v1/cart/items/{id}")
+    environment.log.info("  PUT  /api/v1/cart/items/{id}")
+    environment.log.info("  DELETE /api/v1/cart/items/{id}")
+    environment.log.info("  DELETE /api/v1/cart")
 }
 

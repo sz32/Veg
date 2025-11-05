@@ -5,6 +5,7 @@ A RESTful API service built with Ktor for managing product data. This is a pure 
 ## 🚀 Features
 
 - **RESTful API** endpoints for product management
+- **Shopping Cart API** - Add, remove, update items with automatic totals
 - **CRUD operations** (Create, Read, Update, Delete)
 - **Pagination** support for product listings
 - **Search & Filter** by category and keywords
@@ -59,6 +60,12 @@ We've created a **beautiful, interactive HTML-based API tester** that provides:
 - ✅ PUT `/api/v1/products/{id}` - Update Product
 - ✅ DELETE `/api/v1/products/{id}` - Delete Product
 - ✅ GET `/api/v1/products/categories/list` - Get Categories
+- ✅ GET `/api/v1/cart` - Get Cart
+- ✅ POST `/api/v1/cart/items` - Add Item to Cart
+- ✅ GET `/api/v1/cart/items/{id}` - Get Cart Item
+- ✅ PUT `/api/v1/cart/items/{id}` - Update Cart Item Quantity
+- ✅ DELETE `/api/v1/cart/items/{id}` - Remove Item from Cart
+- ✅ DELETE `/api/v1/cart` - Clear Cart
 
 **File Location:** `product-apis/api-tester.html`
 
@@ -72,11 +79,13 @@ product-apis/
 │       │   └── com/ai/agent/productapis/
 │       │       ├── Application.kt          # Main entry point
 │       │       ├── models/
-│       │       │   └── Models.kt           # Data models
+│       │       │   └── Models.kt           # Data models (Product, Cart, etc.)
 │       │       ├── repository/
-│       │       │   └── ProductRepository.kt # Data management
+│       │       │   ├── ProductRepository.kt # Product data management
+│       │       │   └── CartRepository.kt    # Cart data management
 │       │       ├── routes/
-│       │       │   └── ProductRoutes.kt    # API endpoints
+│       │       │   ├── ProductRoutes.kt    # Product API endpoints
+│       │       │   └── CartRoutes.kt       # Cart API endpoints
 │       │       └── plugins/
 │       │           └── Plugins.kt          # Ktor plugins configuration
 │       └── resources/
@@ -386,6 +395,189 @@ curl http://localhost:8080/api/v1/products/categories/list
   "timestamp": 1699200000000
 }
 ```
+
+---
+
+### Cart Endpoints
+
+#### 1. Get Cart
+```http
+GET /api/v1/cart
+```
+
+Get the complete cart with all items and totals.
+
+**Example:**
+```bash
+curl http://localhost:8080/api/v1/cart
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "productId": 1,
+        "product": {
+          "id": 1,
+          "name": "Wireless Headphones",
+          "imageUrl": "https://picsum.photos/seed/product1/400/400",
+          "rating": 4.5,
+          "price": 99.99,
+          "description": "Premium wireless headphones...",
+          "category": "Electronics",
+          "stock": 50
+        },
+        "quantity": 2,
+        "addedAt": 1699276800000
+      }
+    ],
+    "totalItems": 2,
+    "totalPrice": 199.98,
+    "timestamp": 1699276800000
+  },
+  "timestamp": 1699276800000
+}
+```
+
+#### 2. Add Item to Cart
+```http
+POST /api/v1/cart/items
+Content-Type: application/json
+```
+
+Add a product to the cart or increase quantity if already exists.
+
+**Request Body:**
+```json
+{
+  "productId": 1,
+  "quantity": 2
+}
+```
+
+**Example:**
+```bash
+curl -X POST http://localhost:8080/api/v1/cart/items \
+  -H "Content-Type: application/json" \
+  -d '{"productId": 1, "quantity": 2}'
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "productId": 1,
+    "product": {
+      "id": 1,
+      "name": "Wireless Headphones",
+      "imageUrl": "https://picsum.photos/seed/product1/400/400",
+      "rating": 4.5,
+      "price": 99.99,
+      "description": "Premium wireless headphones...",
+      "category": "Electronics",
+      "stock": 50
+    },
+    "quantity": 2,
+    "addedAt": 1699276800000
+  },
+  "message": "Product added to cart successfully",
+  "timestamp": 1699276800000
+}
+```
+
+#### 3. Update Cart Item Quantity
+```http
+PUT /api/v1/cart/items/{id}
+Content-Type: application/json
+```
+
+Update the quantity of a specific cart item.
+
+**Request Body:**
+```json
+{
+  "quantity": 5
+}
+```
+
+**Example:**
+```bash
+curl -X PUT http://localhost:8080/api/v1/cart/items/1 \
+  -H "Content-Type: application/json" \
+  -d '{"quantity": 5}'
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "productId": 1,
+    "product": { /* product details */ },
+    "quantity": 5,
+    "addedAt": 1699276800000
+  },
+  "message": "Cart item updated successfully",
+  "timestamp": 1699276800000
+}
+```
+
+#### 4. Remove Item from Cart
+```http
+DELETE /api/v1/cart/items/{id}
+```
+
+Remove a specific item from the cart.
+
+**Example:**
+```bash
+curl -X DELETE http://localhost:8080/api/v1/cart/items/1
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": null,
+  "message": "Item removed from cart successfully",
+  "timestamp": 1699276800000
+}
+```
+
+#### 5. Clear Cart
+```http
+DELETE /api/v1/cart
+```
+
+Remove all items from the cart.
+
+**Example:**
+```bash
+curl -X DELETE http://localhost:8080/api/v1/cart
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": null,
+  "message": "Cart cleared successfully",
+  "timestamp": 1699276800000
+}
+```
+
+**📚 For detailed cart API documentation, see:** [`CART_API_DOCUMENTATION.md`](../docs/CART_API_DOCUMENTATION.md)
+
+**🧪 Test cart endpoints with:** `./test-cart-api.sh`
+
+---
 
 ## 🌐 Deployment
 

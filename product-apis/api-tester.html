@@ -511,6 +511,56 @@
                     </div>
                     <div class="endpoint-path">/api/v1/products/categories/list</div>
                 </div>
+
+                <h2 style="margin-top: 20px;">🛒 Cart</h2>
+
+                <div class="endpoint-item" data-endpoint="get-cart">
+                    <div>
+                        <span class="endpoint-method method-GET">GET</span>
+                        <strong>Get Cart</strong>
+                    </div>
+                    <div class="endpoint-path">/api/v1/cart</div>
+                </div>
+
+                <div class="endpoint-item" data-endpoint="add-to-cart">
+                    <div>
+                        <span class="endpoint-method method-POST">POST</span>
+                        <strong>Add to Cart</strong>
+                    </div>
+                    <div class="endpoint-path">/api/v1/cart/items</div>
+                </div>
+
+                <div class="endpoint-item" data-endpoint="get-cart-item">
+                    <div>
+                        <span class="endpoint-method method-GET">GET</span>
+                        <strong>Get Cart Item</strong>
+                    </div>
+                    <div class="endpoint-path">/api/v1/cart/items/{id}</div>
+                </div>
+
+                <div class="endpoint-item" data-endpoint="update-cart-item">
+                    <div>
+                        <span class="endpoint-method method-PUT">PUT</span>
+                        <strong>Update Cart Item</strong>
+                    </div>
+                    <div class="endpoint-path">/api/v1/cart/items/{id}</div>
+                </div>
+
+                <div class="endpoint-item" data-endpoint="remove-cart-item">
+                    <div>
+                        <span class="endpoint-method method-DELETE">DELETE</span>
+                        <strong>Remove Cart Item</strong>
+                    </div>
+                    <div class="endpoint-path">/api/v1/cart/items/{id}</div>
+                </div>
+
+                <div class="endpoint-item" data-endpoint="clear-cart">
+                    <div>
+                        <span class="endpoint-method method-DELETE">DELETE</span>
+                        <strong>Clear Cart</strong>
+                    </div>
+                    <div class="endpoint-path">/api/v1/cart</div>
+                </div>
             </div>
 
             <div class="main-content">
@@ -1183,6 +1233,440 @@
                         <p>Sending request...</p>
                     </div>
                 </div>
+
+                <!-- Get Cart Endpoint -->
+                <div class="endpoint-detail" id="get-cart">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-GET">GET</span> Get Cart
+                        </h2>
+                        <p class="endpoint-description">
+                            Get the complete cart with all items and calculated totals.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Request</h3>
+                        <div class="url-display" id="get-cart-url">/api/v1/cart</div>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "success": true,
+  "data": {
+    "items": [
+      {
+        "id": 1,
+        "productId": 1,
+        "product": {
+          "id": 1,
+          "name": "Wireless Headphones",
+          "price": 99.99,
+          ...
+        },
+        "quantity": 2,
+        "addedAt": 1699276800000
+      }
+    ],
+    "totalItems": 2,
+    "totalPrice": 199.98,
+    "timestamp": 1699276800000
+  }
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <button class="btn btn-primary" onclick="testGetCart()">Send Request</button>
+                    </div>
+
+                    <div class="response-section" id="get-cart-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="get-cart-status"></span>
+                        </div>
+                        <div class="response-body" id="get-cart-body"></div>
+                    </div>
+                    <div class="loading" id="get-cart-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+
+                <!-- Add to Cart Endpoint -->
+                <div class="endpoint-detail" id="add-to-cart">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-POST">POST</span> Add to Cart
+                        </h2>
+                        <p class="endpoint-description">
+                            Add a product to the cart with specified quantity.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Request Body</h3>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>productId</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>ID of the product to add</td>
+                                </tr>
+                                <tr>
+                                    <td><code>quantity</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>Quantity to add (must be > 0)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h3>Test Request</h3>
+                        <form id="add-to-cart-form">
+                            <div class="form-group">
+                                <label>Product ID</label>
+                                <input type="number" name="productId" value="1" required min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Quantity</label>
+                                <input type="number" name="quantity" value="1" required min="1">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Request</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </form>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "success": true,
+  "data": {
+    "id": 1,
+    "productId": 1,
+    "product": { ... },
+    "quantity": 1,
+    "addedAt": 1699276800000
+  },
+  "message": "Product added to cart successfully"
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="response-section" id="add-to-cart-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="add-to-cart-status"></span>
+                        </div>
+                        <div class="response-body" id="add-to-cart-body"></div>
+                    </div>
+                    <div class="loading" id="add-to-cart-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+
+                <!-- Get Cart Item Endpoint -->
+                <div class="endpoint-detail" id="get-cart-item">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-GET">GET</span> Get Cart Item
+                        </h2>
+                        <p class="endpoint-description">
+                            Get details of a specific cart item by its ID.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Path Parameters</h3>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>id</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>The cart item ID</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h3>Test Request</h3>
+                        <form id="get-cart-item-form">
+                            <div class="form-group">
+                                <label>Cart Item ID</label>
+                                <input type="number" name="id" value="1" required min="1">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Request</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </form>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "success": true,
+  "data": {
+    "id": 1,
+    "productId": 1,
+    "product": { ... },
+    "quantity": 2,
+    "addedAt": 1699276800000
+  }
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="response-section" id="get-cart-item-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="get-cart-item-status"></span>
+                        </div>
+                        <div class="response-body" id="get-cart-item-body"></div>
+                    </div>
+                    <div class="loading" id="get-cart-item-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+
+                <!-- Update Cart Item Endpoint -->
+                <div class="endpoint-detail" id="update-cart-item">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-PUT">PUT</span> Update Cart Item
+                        </h2>
+                        <p class="endpoint-description">
+                            Update the quantity of a cart item.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Path Parameters</h3>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>id</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>The cart item ID</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h3>Request Body</h3>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>quantity</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>New quantity (must be > 0)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h3>Test Request</h3>
+                        <form id="update-cart-item-form">
+                            <div class="form-group">
+                                <label>Cart Item ID</label>
+                                <input type="number" name="id" value="1" required min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>New Quantity</label>
+                                <input type="number" name="quantity" value="3" required min="1">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Request</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </form>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "success": true,
+  "data": {
+    "id": 1,
+    "productId": 1,
+    "product": { ... },
+    "quantity": 3,
+    "addedAt": 1699276800000
+  },
+  "message": "Cart item updated successfully"
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="response-section" id="update-cart-item-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="update-cart-item-status"></span>
+                        </div>
+                        <div class="response-body" id="update-cart-item-body"></div>
+                    </div>
+                    <div class="loading" id="update-cart-item-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+
+                <!-- Remove Cart Item Endpoint -->
+                <div class="endpoint-detail" id="remove-cart-item">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-DELETE">DELETE</span> Remove Cart Item
+                        </h2>
+                        <p class="endpoint-description">
+                            Remove a specific item from the cart.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Path Parameters</h3>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>id</code></td>
+                                    <td>Integer</td>
+                                    <td><span class="badge badge-required">Required</span></td>
+                                    <td>The cart item ID</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h3>Test Request</h3>
+                        <form id="remove-cart-item-form">
+                            <div class="form-group">
+                                <label>Cart Item ID</label>
+                                <input type="number" name="id" value="1" required min="1">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Request</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </form>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "success": true,
+  "data": null,
+  "message": "Item removed from cart successfully"
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="response-section" id="remove-cart-item-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="remove-cart-item-status"></span>
+                        </div>
+                        <div class="response-body" id="remove-cart-item-body"></div>
+                    </div>
+                    <div class="loading" id="remove-cart-item-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
+
+                <!-- Clear Cart Endpoint -->
+                <div class="endpoint-detail" id="clear-cart">
+                    <div class="endpoint-header">
+                        <h2 class="endpoint-title">
+                            <span class="endpoint-method method-DELETE">DELETE</span> Clear Cart
+                        </h2>
+                        <p class="endpoint-description">
+                            Remove all items from the cart.
+                        </p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Request</h3>
+                        <div class="url-display" id="clear-cart-url">/api/v1/cart</div>
+                    </div>
+
+                    <div class="section">
+                        <h3>Response Example</h3>
+                        <div class="code-block">
+                            <pre>{
+  "success": true,
+  "data": null,
+  "message": "Cart cleared successfully"
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <button class="btn btn-primary" onclick="testClearCart()">Send Request</button>
+                    </div>
+
+                    <div class="response-section" id="clear-cart-response" style="display: none;">
+                        <div class="response-header">
+                            <h3>Response</h3>
+                            <span class="status-badge" id="clear-cart-status"></span>
+                        </div>
+                        <div class="response-body" id="clear-cart-body"></div>
+                    </div>
+                    <div class="loading" id="clear-cart-loading">
+                        <div class="spinner"></div>
+                        <p>Sending request...</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1427,6 +1911,157 @@
                     showResponse('delete-product', 0, { error: error.message });
                 });
         });
+
+        // Cart API Functions
+
+        // Get Cart
+        function testGetCart() {
+            showLoading('get-cart');
+
+            fetch(`${getBaseUrl()}/api/v1/cart`)
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('get-cart', status, data);
+                })
+                .catch(error => {
+                    showResponse('get-cart', 0, { error: error.message });
+                });
+        }
+
+        // Add to Cart Form
+        document.getElementById('add-to-cart-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showLoading('add-to-cart');
+
+            const formData = new FormData(this);
+            const body = {
+                productId: parseInt(formData.get('productId')),
+                quantity: parseInt(formData.get('quantity'))
+            };
+
+            fetch(`${getBaseUrl()}/api/v1/cart/items`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('add-to-cart', status, data);
+                })
+                .catch(error => {
+                    showResponse('add-to-cart', 0, { error: error.message });
+                });
+        });
+
+        // Get Cart Item Form
+        document.getElementById('get-cart-item-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showLoading('get-cart-item');
+
+            const formData = new FormData(this);
+            const id = formData.get('id');
+
+            fetch(`${getBaseUrl()}/api/v1/cart/items/${id}`)
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('get-cart-item', status, data);
+                })
+                .catch(error => {
+                    showResponse('get-cart-item', 0, { error: error.message });
+                });
+        });
+
+        // Update Cart Item Form
+        document.getElementById('update-cart-item-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showLoading('update-cart-item');
+
+            const formData = new FormData(this);
+            const id = formData.get('id');
+            const body = {
+                quantity: parseInt(formData.get('quantity'))
+            };
+
+            fetch(`${getBaseUrl()}/api/v1/cart/items/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('update-cart-item', status, data);
+                })
+                .catch(error => {
+                    showResponse('update-cart-item', 0, { error: error.message });
+                });
+        });
+
+        // Remove Cart Item Form
+        document.getElementById('remove-cart-item-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!confirm('Are you sure you want to remove this item from cart?')) {
+                return;
+            }
+
+            showLoading('remove-cart-item');
+
+            const formData = new FormData(this);
+            const id = formData.get('id');
+
+            fetch(`${getBaseUrl()}/api/v1/cart/items/${id}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('remove-cart-item', status, data);
+                })
+                .catch(error => {
+                    showResponse('remove-cart-item', 0, { error: error.message });
+                });
+        });
+
+        // Clear Cart
+        function testClearCart() {
+            if (!confirm('Are you sure you want to clear the entire cart?')) {
+                return;
+            }
+
+            showLoading('clear-cart');
+
+            fetch(`${getBaseUrl()}/api/v1/cart`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    const status = response.status;
+                    return response.json().then(data => ({ status, data }));
+                })
+                .then(({ status, data }) => {
+                    showResponse('clear-cart', status, data);
+                })
+                .catch(error => {
+                    showResponse('clear-cart', 0, { error: error.message });
+                });
+        }
     </script>
 </body>
 </html>

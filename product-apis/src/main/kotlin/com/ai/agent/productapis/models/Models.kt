@@ -77,3 +77,32 @@ data class InfoResponse(
     val timestamp: Long = System.currentTimeMillis()
 )
 
+// Cart Models
+@Serializable
+data class CartItem(
+    val id: Int,
+    val productId: Int,
+    val product: Product,
+    val quantity: Int,
+    val addedAt: Long = System.currentTimeMillis()
+)
+
+@Serializable
+data class AddToCartRequest(
+    val productId: Int,
+    val quantity: Int = 1
+)
+
+@Serializable
+data class UpdateCartItemRequest(
+    val quantity: Int
+)
+
+@Serializable
+data class Cart(
+    val items: List<CartItem>,
+    val totalItems: Int,
+    val totalPrice: Double,
+    val timestamp: Long = System.currentTimeMillis()
+)
+
