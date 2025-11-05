@@ -1,5 +1,6 @@
 package com.ai.agent.productapis.plugins
 
+import com.ai.agent.productapis.models.ErrorResponse
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -79,11 +80,11 @@ fun Application.configureStatusPages() {
             call.application.environment.log.error("Unhandled exception", cause)
             call.respond(
                 HttpStatusCode.InternalServerError,
-                mapOf(
-                    "success" to false,
-                    "error" to "INTERNAL_SERVER_ERROR",
-                    "message" to (cause.message ?: "An unexpected error occurred"),
-                    "timestamp" to System.currentTimeMillis()
+                ErrorResponse(
+                    success = false,
+                    error = "INTERNAL_SERVER_ERROR",
+                    message = cause.message ?: "An unexpected error occurred",
+                    timestamp = System.currentTimeMillis()
                 )
             )
         }
@@ -91,11 +92,11 @@ fun Application.configureStatusPages() {
         status(HttpStatusCode.NotFound) { call, status ->
             call.respond(
                 status,
-                mapOf(
-                    "success" to false,
-                    "error" to "NOT_FOUND",
-                    "message" to "The requested resource was not found",
-                    "timestamp" to System.currentTimeMillis()
+                ErrorResponse(
+                    success = false,
+                    error = "NOT_FOUND",
+                    message = "The requested resource was not found",
+                    timestamp = System.currentTimeMillis()
                 )
             )
         }
@@ -103,11 +104,11 @@ fun Application.configureStatusPages() {
         status(HttpStatusCode.Unauthorized) { call, status ->
             call.respond(
                 status,
-                mapOf(
-                    "success" to false,
-                    "error" to "UNAUTHORIZED",
-                    "message" to "Authentication is required",
-                    "timestamp" to System.currentTimeMillis()
+                ErrorResponse(
+                    success = false,
+                    error = "UNAUTHORIZED",
+                    message = "Authentication is required",
+                    timestamp = System.currentTimeMillis()
                 )
             )
         }

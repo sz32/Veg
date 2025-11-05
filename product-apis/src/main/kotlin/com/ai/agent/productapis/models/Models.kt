@@ -63,3 +63,17 @@ data class ErrorResponse(
     val timestamp: Long = System.currentTimeMillis()
 )
 
+@Serializable
+data class HealthResponse(
+    val status: String,
+    val timestamp: Long = System.currentTimeMillis()
+)
+
+@Serializable
+data class InfoResponse(
+    val name: String,
+    val version: String,
+    val status: String,
+    val timestamp: Long = System.currentTimeMillis()
+)
+

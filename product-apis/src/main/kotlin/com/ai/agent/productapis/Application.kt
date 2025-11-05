@@ -1,5 +1,7 @@
 package com.ai.agent.productapis
 
+import com.ai.agent.productapis.models.HealthResponse
+import com.ai.agent.productapis.models.InfoResponse
 import com.ai.agent.productapis.plugins.*
 import com.ai.agent.productapis.repository.ProductRepository
 import com.ai.agent.productapis.routes.productRoutes
@@ -33,20 +35,20 @@ fun Application.module() {
         // Health check endpoint
         get("/") {
             call.respond(
-                mapOf(
-                    "name" to "Product APIs",
-                    "version" to "1.0.0",
-                    "status" to "running",
-                    "timestamp" to System.currentTimeMillis()
+                InfoResponse(
+                    name = "Product APIs",
+                    version = "1.0.0",
+                    status = "running",
+                    timestamp = System.currentTimeMillis()
                 )
             )
         }
 
         get("/health") {
             call.respond(
-                mapOf(
-                    "status" to "UP",
-                    "timestamp" to System.currentTimeMillis()
+                HealthResponse(
+                    status = "UP",
+                    timestamp = System.currentTimeMillis()
                 )
             )
         }
