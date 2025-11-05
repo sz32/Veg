@@ -8,8 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.ai.agent.ui.screen.CheckoutScreen
+import com.ai.agent.ui.screen.LoginScreen
 import com.ai.agent.ui.screen.ProductDetailScreen
 import com.ai.agent.ui.screen.ProductListScreen
+import com.ai.agent.ui.screen.RegisterScreen
 import com.ai.settings.ui.SettingsScreen
 import com.ai.agent.viewmodel.ProductViewModel
 
@@ -20,7 +22,7 @@ fun AppNavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = NavRoutes.ProductList.route
+        startDestination = NavRoutes.Login.route
     ) {
         composable(NavRoutes.ProductList.route) {
             ProductListScreen(
@@ -68,6 +70,33 @@ fun AppNavGraph(
             SettingsScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                }
+            )
+        }
+
+        composable(NavRoutes.Login.route) {
+            LoginScreen(
+                onLoginSuccess = {
+                    navController.navigate(NavRoutes.ProductList.route) {
+                        popUpTo(NavRoutes.Login.route) { inclusive = true }
+                    }
+                },
+                onNavigateToRegister = {
+                    navController.navigate(NavRoutes.Register.route)
+                }
+            )
+        }
+        composable(NavRoutes.Register.route) {
+            RegisterScreen(
+                onRegisterSuccess = {
+                    navController.navigate(NavRoutes.Login.route) {
+                        popUpTo(NavRoutes.Register.route) { inclusive = true }
+                    }
+                },
+                onNavigateToLogin = {
+                    navController.navigate(NavRoutes.Login.route) {
+                        popUpTo(NavRoutes.Register.route) { inclusive = true }
+                    }
                 }
             )
         }

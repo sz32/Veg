@@ -7,4 +7,6 @@ sealed class NavRoutes(val route: String) {
     }
     data object Checkout : NavRoutes("checkout")
     data object Settings : NavRoutes("settings")
+    data object Login : NavRoutes("login")
+    data object Register : NavRoutes("register")
 }

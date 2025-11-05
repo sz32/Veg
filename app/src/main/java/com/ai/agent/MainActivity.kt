@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
+                    // Start at Login screen if not authenticated
                     AppNavGraph(navController = navController)
                 }
             }
