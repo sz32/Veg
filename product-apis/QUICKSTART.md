@@ -5,7 +5,7 @@
 ### Step 1: Build the Module
 ```bash
 cd /Users/zeel/StudioProjects/FullCreative/Personal/AiAgent
-./gradlew :product-apis:build
+./gradlew :product-apis:build./gradlew :product-apis:run
 ```
 
 ### Step 2: Run the Server
